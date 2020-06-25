@@ -68,21 +68,23 @@
     NSDictionary *post = self.posts[indexPath.row];
     NSArray *photos = post[@"photos"];
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
+    if (photos) {
+         NSDictionary *photo = photos[0];
 
-       // 1. Get the first photo in the photos array
-       NSDictionary *photo = photos[0];
+         // 2. Get the original size dictionary from the photo
+         NSDictionary *originalSize =  photo[@"original_size"];
 
-       // 2. Get the original size dictionary from the photo
-       NSDictionary *originalSize =  photo[@"original_size"];
+         // 3. Get the url string from the original size dictionary
+         NSString *urlString = originalSize[@"url"];
 
-       // 3. Get the url string from the original size dictionary
-       NSString *urlString = originalSize[@"url"];
-
-       // 4. Create a URL using the urlString
-       NSURL *url = [NSURL URLWithString:urlString];
-        
-       [cell.postView setImageWithURL:url];
-        return cell;
+         // 4. Create a URL using the urlString
+         NSURL *url = [NSURL URLWithString:urlString];
+         [cell.postView setImageWithURL:url];
+     }
+     else {
+         cell.postView.image = nil;
+    }
+    return cell;
 }
 
 
